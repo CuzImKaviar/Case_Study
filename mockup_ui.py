@@ -21,13 +21,14 @@ def device_management():
     device_name = st.selectbox("Device:", Devices)
     device_reservation_start = st.date_input("Start of reservation:")
     device_reservation_end = st.date_input("End of reservation:")
+    user_email = st.text_input("User email:")
 
     if st.button("Create/Change device"):
         if device_reservation_start > device_reservation_end:
             st.error("The start date must not be after the end date.")
         else:
-            new_device = Device(name=device_name, reservation_start=device_reservation_start, reservation_end=device_reservation_end)
-            st.success(f"Device '{new_device.name}' was created/changed with reservation from '{new_device.reservation_start}' to '{new_device.reservation_end}'.")
+            new_device = Device(device_name=device_name, managed_by_user_id=user_email,reservation_start=device_reservation_start, reservation_end=device_reservation_end)
+            st.success(f"Device '{new_device.device_name}' was reservated from '{new_device.reservation_start}' to '{new_device.reservation_end}' by '{user_email}'.")
 
 selection = st.sidebar.selectbox("Choose an option:", ["User Management", "Device Management"])
 
