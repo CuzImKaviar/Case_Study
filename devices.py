@@ -17,6 +17,7 @@ class Device():
         # We don't store the user object itself, but only the id (as a key)
         self.managed_by_user_id = managed_by_user_id
         self.is_active = True
+        self.reservation_queue = []
         
     # String representation of the class
     def __str__(self):
@@ -39,7 +40,19 @@ class Device():
             # If the device doesn't exist, insert a new record
             self.db_connector.insert(self.__dict__)
             print("Data inserted.")
-            
+
+    def add_reservation(self, reservation):
+        self.reservation_queue.append(reservation)
+    
+    def remove_reservation(self, reservation):
+        self.reservation_queue.remove(reservation)
+
+    def get_reservations(self):
+        return self.reservation_queue
+    
+    def change_maintanance_date(self, new_date):
+        self.maintanance_date = new_date
+
     # Class method that can be called without an instance of the class to construct an instance of the class
     @classmethod
     def load_data_by_device_name(cls, device_name):
@@ -59,11 +72,11 @@ if __name__ == "__main__":
     # Create a device
     device1 = Device("Device1", "one@mci.edu")
     device2 = Device("Device2", "two@mci.edu") 
-    device3 = Device("Device3", "two@mci.edu") 
+    device3 = Device("Device3", "three@mci.edu") 
     device1.store_data()
     device2.store_data()
     device3.store_data()
-    device4 = Device("Device3", "four@mci.edu") 
+    device4 = Device("Device4", "four@mci.edu") 
     device4.store_data()
 
     loaded_device = Device.load_data_by_device_name('Device2')
