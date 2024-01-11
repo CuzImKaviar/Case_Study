@@ -12,8 +12,8 @@ def user_management():
     user_email = st.text_input("Email:")
 
     if st.button("Create user"):
-        new_user = User(id=user_email, name=user_name, email=user_email)
-        st.success(f"User '{new_user.name}' with email '{new_user.email}' was created.")
+        new_user = User(id=user_email, name=user_name)
+        st.success(f"User '{new_user.name}' with email '{new_user.id}' was created.")
 
 def device_management():
     st.title("Device Management")
