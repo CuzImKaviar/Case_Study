@@ -1,24 +1,17 @@
 import os
-
-from users import User
-
 from tinydb import TinyDB, Query
-from serializer import serializer
 
-
-class Device():
+class Device:
     # Class variable that is shared between all instances of the class
-    db_connector = TinyDB(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'database.json'), storage=serializer).table('devices')
+    db_connector = TinyDB(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'database.json')).table('devices')
 
     # Constructor
-    def __init__(self, device_name : str, managed_by_user_id : str):
+    def __init__(self, device_name: str, managed_by_user_id: str):
         self.device_name = device_name
-        # The user id of the user that manages the device
-        # We don't store the user object itself, but only the id (as a key)
         self.managed_by_user_id = managed_by_user_id
         self.is_active = True
         self.reservation_queue = []
-        
+
     # String representation of the class
     def __str__(self):
         return f'Device {self.device_name} ({self.managed_by_user_id})'
@@ -26,7 +19,7 @@ class Device():
     # String representation of the class
     def __repr__(self):
         return self.__str__()
-    
+
     def store_data(self):
         print("Storing data...")
         # Check if the device already exists in the database
@@ -34,24 +27,24 @@ class Device():
         result = self.db_connector.search(DeviceQuery.device_name == self.device_name)
         if result:
             # Update the existing record with the current instance's data
-            result = self.db_connector.update(self.__dict__, doc_ids=[result[0].doc_id])
+            result = self.db_connector.update({'data': self.__dict__}, doc_ids=[result[0].doc_id])
             print("Data updated.")
         else:
             # If the device doesn't exist, insert a new record
-            self.db_connector.insert(self.__dict__)
+            self.db_connector.insert({'data': self.__dict__})
             print("Data inserted.")
 
     def add_reservation(self, reservation):
         self.reservation_queue.append(reservation)
-    
+
     def remove_reservation(self, reservation):
         self.reservation_queue.remove(reservation)
 
     def get_reservations(self):
         return self.reservation_queue
-    
-    def change_maintanance_date(self, new_date):
-        self.maintanance_date = new_date
+
+    def change_maintenance_date(self, new_date):
+        self.maintenance_date = new_date
 
     # Class method that can be called without an instance of the class to construct an instance of the class
     @classmethod
@@ -61,22 +54,21 @@ class Device():
         result = cls.db_connector.search(DeviceQuery.device_name == device_name)
 
         if result:
-            data = result[0]
+            data = result[0]['data']
             return cls(data['device_name'], data['managed_by_user_id'])
         else:
             return None
 
 
-
 if __name__ == "__main__":
     # Create a device
     device1 = Device("Device1", "one@mci.edu")
-    device2 = Device("Device2", "two@mci.edu") 
-    device3 = Device("Device3", "three@mci.edu") 
+    device2 = Device("Device2", "two@mci.edu")
+    device3 = Device("Device3", "three@mci.edu")
     device1.store_data()
     device2.store_data()
     device3.store_data()
-    device4 = Device("Device4", "four@mci.edu") 
+    device4 = Device("Device4", "four@mci.edu")
     device4.store_data()
 
     loaded_device = Device.load_data_by_device_name('Device2')
@@ -84,5 +76,3 @@ if __name__ == "__main__":
         print(f"Loaded Device: {loaded_device}")
     else:
         print("Device not found.")
-
-    
