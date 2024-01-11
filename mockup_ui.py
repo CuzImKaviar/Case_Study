@@ -18,9 +18,11 @@ def user_management():
 def device_management():
     st.title("Device Management")
 
+    
     device_name = st.selectbox("Device:", Devices)
-    device_reservation_start = st.date_input("Start of reservation:")
-    device_reservation_end = st.date_input("End of reservation:")
+    col1, col2 = st.columns(2)
+    device_reservation_start = col1.date_input("Start of reservation:")
+    device_reservation_end = col2.date_input("End of reservation:")
     user_email = st.text_input("User email:")
 
     if st.button("Create/Change device"):
