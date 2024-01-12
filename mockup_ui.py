@@ -46,3 +46,7 @@ if selection == "User Management":
     user_management()
 elif selection == "Device Management":
     device_management()
+elif selection == "Reservation System":
+    reservation_system()
+elif selection == "Maintenance Management":
+    maintenance_management()
