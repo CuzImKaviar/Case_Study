@@ -1,5 +1,5 @@
 <a name="readme-top"></a>
-# Mockup der UI der Geräteverwaltung
+# Mockup der Geräteverwaltung
 
 Dieses Projekt stellt ein Mockup für eine Sotware zur Geräteverwaltung an einer Hochschule da.
 
@@ -84,6 +84,10 @@ Da es sich bei diesem Programm nur um ein Mockup handelt, muss die Entsprechende
 
 Contributors names and contact info
 
+* Sebastian Bachlechner    
+&emsp;Email: <s.bachlechner@mci4me.at>
+* Noel Hack    
+&emsp;Email: <n.hack@mci4me.at>
 * Tobias Stummer    
 &emsp;Email: <t.stummer@mci4me.at>
 
@@ -93,7 +97,7 @@ Contributors names and contact info
 
 * 0.1
     * Setup
-    * Siehe [Commits](https://github.com/STTOMCI/UI_Geraeteverwaltung/commits/main/) für mehr Details
+    * Siehe [Commits](github.com/CuzImKaviar/Case_Study/commits/main/) für mehr Details
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
