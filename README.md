@@ -97,7 +97,7 @@ Contributors names and contact info
 
 * 0.1
     * Setup
-    * Siehe [Commits](https://github.com/STTOMCI/UI_Geraeteverwaltung/commits/main/) für mehr Details
+    * Siehe [Commits](github.com/CuzImKaviar/Case_Study/commits/main/) für mehr Details
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
