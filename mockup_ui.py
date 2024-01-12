@@ -32,7 +32,15 @@ def device_management():
             new_device = Device(device_name=device_name, managed_by_user_id=user_email,reservation_start=device_reservation_start, reservation_end=device_reservation_end)
             st.success(f"Device '{new_device.device_name}' was reservated from '{new_device.reservation_start}' to '{new_device.reservation_end}' by '{user_email}'.")
 
-selection = st.sidebar.selectbox("Choose an option:", ["User Management", "Device Management"])
+def reservation_system():
+    st.title("Reservation System")
+    # Implementiere hier die Reservierungssystemfunktionalität...
+
+def maintenance_management():
+    st.title("Maintenance Management")
+    # Implementiere hier die Wartungsmanagementfunktionalität...
+
+selection = st.sidebar.selectbox("Choose an option:", ["User Management", "Device Management", "Reservation System","Maintenance Management"])
 
 if selection == "User Management":
     user_management()
