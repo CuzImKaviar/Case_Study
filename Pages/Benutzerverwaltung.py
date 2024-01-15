@@ -150,3 +150,4 @@ if selected == "Geräte resvieren":
 
 # --- SHOW USERS ---
 if selected == "Benutzer anzeigen":
+    pass
