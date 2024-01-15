@@ -3,6 +3,7 @@ from streamlit_option_menu import option_menu
 from streamlit_calendar import calendar
 import roman
 import datetime
+from devices import Device
 
 # -------------- SETTINGS --------------
 page_title = "Geräteverwaltung"
