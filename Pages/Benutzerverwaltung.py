@@ -67,36 +67,22 @@ if selected == "Benutzer verwalten":
         st.header(f"Geräte bearbeiten")
         with st.form("select_form", clear_on_submit=True):
             current_device_example = st.selectbox(
-                'Gerät auswählen',
-                options = ["Gerät_A", "Gerät_B"], key="device")
+                'Benutzer auswählen',
+                options = [User.name], key="user")
             submitted = st.form_submit_button("Gerät bearbeiten")
             if submitted:
-                device_name = st.session_state["device"]
+                user_name = st.session_state["user"]
                 manage = True
         
         if manage:
             with st.form("edit_form", clear_on_submit=True):
-                st.header(str(device_name))
+                st.header("Benutzer bearbeiten")
                 col1, col2 = st.columns(2)
-                col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
-                tool_types = ["Office", "EDV", "Labore", "Diverses"]
-                col2.selectbox("Geräte Art:", tool_types, key="type")
-
-                "---"
-
-                with st.expander("Geräteeigenschaften"):
-                    st.number_input("Preis:", min_value=0, format="%i", step=10, key="cost")
-                    st.selectbox("Verantwortlicher:", ["Person A", "Person B"], key="person")
-                    st.radio("Beweglichkeit:", ["Feststehend", "Beweglich"], horizontal=True, key="mobility")
-                with st.expander("Wartung und Reservierung"):
-                    st.radio(
-                        "Wartungsabstände:",
-                        options=["keine Wartung notwendig", "täglich", "wöchentlich", "monatlich", "jährlich"],
-                        key="intervals")
-                    st.number_input("Kosten pro Wartung:", min_value=0, format="%i", step=1, key="maintenancecost")
-                    st.radio("Resavierbarkeit:", ["Resavierbar", "Nicht resavierbar"], horizontal=True, key="resavable")
-                with st.expander("Kommentar"):
-                    comment = st.text_area("Kommentarfeld", placeholder="Kommentar hier einfügen ...", label_visibility="collapsed")
+                User.location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
+                tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
+                User.job = col2.selectbox(" Tätigkeit am MCI oder so:", tool_types, key="type")
+                User.name =st.text_input("Name", max_chars=64, placeholder="Name hier einfügen ...", key="Name")
+                User.id = st.text_input("E-mail", max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
 
                 "---"
 
