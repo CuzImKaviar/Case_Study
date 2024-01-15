@@ -57,52 +57,38 @@ if selected == "Benutzer verwalten":
 
 
 
-            
-                       
-
-
-            submitted = st.form_submit_button("Neues Gerät anlegen")
+            submitted = st.form_submit_button("Neuen Benutzer anlegen")
             if submitted:
-                st.success("Neues Gerät erfolgreich anlegen!")
+                st.success("Neuen Benutzer erfolgreich anlegen!")
 
-    # --- MANAGE DEVICE ---               
-    if manage_selected == "Geräte bearbeiten":
+    # --- MANAGE Benutzer ---               
+    if manage_selected == "Benutzer bearbeiten":
         manage = False
-        st.header(f"Geräte bearbeiten")
+        st.header(f"Benutzer bearbeiten")
         with st.form("select_form", clear_on_submit=True):
             current_device_example = st.selectbox(
-                'Gerät auswählen',
-                options = ["Gerät_A", "Gerät_B"], key="device")
-            submitted = st.form_submit_button("Gerät bearbeiten")
+                'Benutzer auswählen',
+                options = ["Gerät_A", "Gerät_B"], key="Benutzer")
+            submitted = st.form_submit_button("Benutzer bearbeiten")
             if submitted:
-                device_name = st.session_state["device"]
+                device_name = st.session_state["Benutzer"]
                 manage = True
         
         if manage:
             with st.form("edit_form", clear_on_submit=True):
                 st.header(str(device_name))
+                
+                #Hier müssten die Werte bereits eingefüllt sein
                 col1, col2 = st.columns(2)
                 col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
-                tool_types = ["Office", "EDV", "Labore", "Diverses"]
-                col2.selectbox("Geräte Art:", tool_types, key="type")
+                tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
+                col2.selectbox(" Tätigkeit am MCI oder so:", tool_types, key="type")
+                st.text_input("E-mail", max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
+
 
                 "---"
 
-                with st.expander("Geräteeigenschaften"):
-                    st.number_input("Preis:", min_value=0, format="%i", step=10, key="cost")
-                    st.selectbox("Verantwortlicher:", ["Person A", "Person B"], key="person")
-                    st.radio("Beweglichkeit:", ["Feststehend", "Beweglich"], horizontal=True, key="mobility")
-                with st.expander("Wartung und Reservierung"):
-                    st.radio(
-                        "Wartungsabstände:",
-                        options=["keine Wartung notwendig", "täglich", "wöchentlich", "monatlich", "jährlich"],
-                        key="intervals")
-                    st.number_input("Kosten pro Wartung:", min_value=0, format="%i", step=1, key="maintenancecost")
-                    st.radio("Resavierbarkeit:", ["Resavierbar", "Nicht resavierbar"], horizontal=True, key="resavable")
-                with st.expander("Kommentar"):
-                    comment = st.text_area("Kommentarfeld", placeholder="Kommentar hier einfügen ...", label_visibility="collapsed")
-
-                "---"
+                
 
                 save = st.form_submit_button("Änderungen speichern")
                 if save:
