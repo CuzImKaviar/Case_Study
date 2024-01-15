@@ -286,7 +286,7 @@ if selected == "Geräte resvieren":
             "Resvierungszeitraum auswählen:",
             (datetime.datetime.now(), datetime.datetime.now()),
             datetime.datetime.now(),
-            format="DD-MM-YYYY",
+            format="DD.MM.YYYY",
         )
 
         "---"
