@@ -3,6 +3,7 @@ from streamlit_option_menu import option_menu
 from streamlit_calendar import calendar
 import roman
 import datetime
+from users import User
 
 # -------------- SETTINGS --------------
 page_title = "Benutzerverwaltung"
@@ -50,12 +51,11 @@ if selected == "Benutzer verwalten":
         st.header(f"Anlegen eines neuen Benutzers")
         with st.form("entry_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
-            col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
+            User.location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
             tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
-            col2.selectbox(" Tätigkeit am MCI oder so:", tool_types, key="type")
-            st.text_input("E-mail", max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
-
-
+            User.job = col2.selectbox(" Tätigkeit am MCI oder so:", tool_types, key="type")
+            User.name =st.text_input("Name", max_chars=64, placeholder="Name hier einfügen ...", key="Name")
+            User.id = st.text_input("E-mail", max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
 
             submitted = st.form_submit_button("Neuen Benutzer anlegen")
             if submitted:
