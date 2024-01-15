@@ -62,7 +62,7 @@ if selected == "Benutzer verwalten":
                 st.success("Neuen Benutzer erfolgreich anlegen!")
 
     # --- MANAGE DEVICE ---               
-    if manage_selected == "Geräte bearbeiten":
+    if manage_selected == "Benutzer bearbeiten":
         manage = False
         st.header(f"Geräte bearbeiten")
         with st.form("select_form", clear_on_submit=True):
@@ -105,7 +105,7 @@ if selected == "Benutzer verwalten":
                     st.success("Änderungen erfolgreich gespeichert!")
             
     # --- REMOVE DEVICES ---
-    if manage_selected == "Geräte entfernen":
+    if manage_selected == "Benutzer entfernen":
         st.header(f"Geräte entfernen")
         with st.form("delete_form", clear_on_submit=True):
             device = st.selectbox(
@@ -114,38 +114,6 @@ if selected == "Benutzer verwalten":
             submitted = st.form_submit_button("Gerät löschen")
             if submitted:
                 st.success("Gerät erfolgreich gelöscht!")
-
-
-# --- RESERVE DEVICES ---
-if selected == "Geräte resvieren":
-    st.header(f"Anlegen eines neuem Gerät")
-    with st.form("entry_form", clear_on_submit=True):
-        col1, col2 = st.columns(2)
-        col1.selectbox(
-                'Gerät auswählen',
-                options = ["Gerät_A", "Gerät_B"], key="device")
-        reason_types = ["Wartung", "Lehrveranstaltung", "Forschungsprojekt", "Privatgebruach"]
-        col2.selectbox("Resvierungsgrund:", reason_types, key="reason")
-
-        "---"
-
-        st.date_input(
-            "Resvierungszeitraum auswählen:",
-            (datetime.datetime.now(), datetime.datetime.now()),
-            datetime.datetime.now(),
-            format="DD-MM-YYYY",
-        )
-
-        "---"
-
-        with st.expander("Kommentar"):
-            comment = st.text_area("Kommentarfeld", placeholder="Kommentar hier einfügen ...", label_visibility="collapsed")
-
-        "---"
-
-        submitted = st.form_submit_button("Gerät resvieren")
-        if submitted:
-            st.success("Gerät erfolgreich resviert!")
 
 
 # --- SHOW USERS ---
