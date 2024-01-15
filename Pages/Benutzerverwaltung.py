@@ -57,18 +57,8 @@ if selected == "Benutzer verwalten":
 
 
 
-            with st.expander("Geräteeigenschaften"):
-                st.number_input("Preis:", min_value=0, format="%i", step=10, key="cost")
-                st.selectbox("Verantwortlicher:", ["Person A", "Person B"], key="person")
-                st.radio("Beweglichkeit:", ["Feststehend", "Beweglich"], horizontal=True, key="mobility")
-            with st.expander("Wartung und Reservierung"):
-                st.radio(
-                    "Wartungsabstände:",
-                    options=["keine Wartung notwendig", "täglich", "wöchentlich", "monatlich", "jährlich"],
-                    key="intervals")
-                st.number_input("Kosten pro Wartung:", min_value=0, format="%i", step=1, key="maintenancecost")
-                st.radio("Resavierbarkeit:", ["Resavierbar", "Nicht resavierbar"], horizontal=True, key="resavable")
-           
+            
+                       
 
 
             submitted = st.form_submit_button("Neues Gerät anlegen")
