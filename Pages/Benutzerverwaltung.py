@@ -64,19 +64,19 @@ if selected == "Benutzer verwalten":
     # --- MANAGE DEVICE ---               
     if manage_selected == "Benutzer bearbeiten":
         manage = False
-        st.header(f"Geräte bearbeiten")
+        st.header(f"Benutzer bearbeiten")
         with st.form("select_form", clear_on_submit=True):
             current_device_example = st.selectbox(
                 'Benutzer auswählen',
                 options = [User.name], key="user")
-            submitted = st.form_submit_button("Gerät bearbeiten")
+            submitted = st.form_submit_button("Benutzer bearbeiten")
             if submitted:
                 user_name = st.session_state["user"]
                 manage = True
         
         if manage:
             with st.form("edit_form", clear_on_submit=True):
-                st.header("Benutzer bearbeiten")
+                st.header(f"Benutzer bearbeiten")
                 col1, col2 = st.columns(2)
                 User.location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
                 tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
@@ -92,14 +92,14 @@ if selected == "Benutzer verwalten":
             
     # --- REMOVE DEVICES ---
     if manage_selected == "Benutzer entfernen":
-        st.header(f"Geräte entfernen")
+        st.header(f"Benutzer entfernen")
         with st.form("delete_form", clear_on_submit=True):
             device = st.selectbox(
-                'Gerät auswählen',
-                options = ["Gerät_A", "Gerät_B"], key="device")
-            submitted = st.form_submit_button("Gerät löschen")
+                'Benutzer auswählen',
+                options = User.name, key="device")
+            submitted = st.form_submit_button("Benutzer löschen")
             if submitted:
-                st.success("Gerät erfolgreich gelöscht!")
+                st.success("Benutzer erfolgreich gelöscht!")
 
 
 # --- SHOW USERS ---
