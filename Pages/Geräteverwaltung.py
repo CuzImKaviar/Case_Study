@@ -10,6 +10,12 @@ page_title = "Geräteverwaltung"
 page_icon = ":books:"  # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = "centered"
 
+# --- SESSION STATES ---
+if "manage" not in st.session_state:
+    st.session_state["manage"] = False
+if "success" not in st.session_state:
+    st.session_state["success"] = ""
+
 calendar_resources = [
     {"id": "a", "building": "Building A", "title": "Room A"},
     {"id": "b", "building": "Building A", "title": "Room B"},
