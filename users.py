@@ -16,3 +16,15 @@ class User:
                 cls._list.remove(user)
                 return True
         return False
+    
+    @classmethod
+    def update(cls, old_name, id, name, location, job):   
+        for user in cls._list:
+            if user.name == old_name:
+                user.id = id
+                user.name = name
+                user.location = location
+                user.job = job
+                return True
+        return False
+        

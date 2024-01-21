@@ -4,6 +4,7 @@ from streamlit_calendar import calendar
 import roman
 import pandas as pd
 import datetime
+import time
 from users import User
 
 # -------------- SETTINGS --------------
@@ -16,6 +17,11 @@ layout = "centered"
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout=layout)
 st.title(page_title + " " + page_icon)
 
+# --- SESSION STATE ---
+if "manage" not in st.session_state:
+    st.session_state["manage"] = False
+if "success" not in st.session_state:
+    st.session_state["success"] = ""
 
 # --- HIDE STREAMLIT STYLE ---
 hide_st_style = """
@@ -61,42 +67,51 @@ if selected == "Benutzer verwalten":
             if submitted:
                 User(id, name, location, job)
                 st.success("Neuen Benutzer erfolgreich anlegen!")
+                st.balloons()
 
     # --- EDIT USER ---               
-    if manage_selected == "Benutzer bearbeiten":
-        manage = False
+    if manage_selected == "Benutzer bearbeiten":    
+        user_options = [user.name for user in User._list]
         st.header(f"Benutzer bearbeiten")
 
-        
-        with st.form("select_form", clear_on_submit=False):
-            current_user = st.selectbox(
+
+        with st.form("select_form", clear_on_submit=True):
+            user = st.selectbox(
                 'Benutzer auswählen',
-                options = User._list, format_func=lambda user: user.name, key="user"
+                options = user_options, key="user"
             )
             submitted = st.form_submit_button("Benutzer bearbeiten")
             if submitted:
-                user_to_edit = next((user for user in User._list if user.name == current_user), None)
-                manage = True
+                st.session_state["manage"] = True
         
-        if manage:
-            with st.form("edit_form", clear_on_submit=True):
-                col1, col2 = st.columns(2)
-                user_to_edit.location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
-                tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
-                user_to_edit.job = col2.selectbox(" Tätigkeit am MCI oder so:", tool_types, key="type")
-                user_to_edit.name =st.text_input("Name", max_chars=64, placeholder="Name hier einfügen ...", key="Name")
-                user_to_edit.id = st.text_input("E-mail", max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
+            
+        
+        if st.session_state["manage"]:    
+            user_to_edit = next((current_user for current_user in User._list if current_user.name == user), None)
+            if user_to_edit is not None:
+                with st.form("edit_form", clear_on_submit=False):
+                    col1, col2 = st.columns(2)
+                    location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci", index=roman.fromRoman(user_to_edit.location)-1)
+                    tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
+                    job = col2.selectbox(" Tätigkeit am MCI oder so:", tool_types, key="type", index=tool_types.index(user_to_edit.job))
+                    name = st.text_input("Name", value=user_to_edit.name, max_chars=64, placeholder="Name hier einfügen ...", key="Name")
+                    id = st.text_input("E-mail", value=user_to_edit.id, max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
+                    "---"
+                    save = st.form_submit_button("Änderungen speichern")
+                    if save:
+                        st.write(User.update(user_to_edit.name, id, name, location, job))
+                        st.session_state["manage"] = False
+                        st.session_state["success"] = "Änderungen erfolgreich gespeichert!"
+                        st.rerun()
+                        
+                        
 
-                "---"
-
-                save = st.form_submit_button("Änderungen speichern")
-                if save:
-                    st.success("Änderungen erfolgreich gespeichert!")
-
-    # --- REMOVE USERS ---                
+            else:
+                st.error("Benutzer nicht gefunden!")
+        st.write(st.session_state["manage"])
+    # --- REMOVE USERS ---                      
     if manage_selected == "Benutzer entfernen":
         user_options = [user.name for user in User._list]
-
         with st.form("delete_form", clear_on_submit=True):
             user = st.selectbox(
                 'Benutzer auswählen',
@@ -105,10 +120,12 @@ if selected == "Benutzer verwalten":
             submitted = st.form_submit_button("Benutzer löschen")
             if submitted:
                 if User.remove(user):
-                    st.success("Benutzer erfolgreich gelöscht!")
+                    st.session_state["success"] = "Benutzer erfolgreich gelöscht!"                  
+                    st.rerun()
                 else:
                     st.error("Benutzer konnte nicht gelöscht werden!")
-        
+            
+    st.success(st.session_state["success"])       
 
 # --- SHOW USERS ---
 if selected == "Benutzer anzeigen":  
