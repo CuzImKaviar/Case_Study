@@ -17,7 +17,7 @@ layout = "centered"
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout=layout)
 st.title(page_title + " " + page_icon)
 
-# --- SESSION STATE ---
+# --- SESSION STATES ---
 if "manage" not in st.session_state:
     st.session_state["manage"] = False
 if "success" not in st.session_state:
@@ -44,7 +44,6 @@ selected = option_menu(
 
 # --- MANAGE USERS ---
 if selected == "Benutzer verwalten":
-
     manage_selected = option_menu(
         menu_title=None,
         options=["Benutzer hinzufügen", "Benutzer bearbeiten", "Benutzer entfernen"],
@@ -52,28 +51,34 @@ if selected == "Benutzer verwalten":
         orientation="horizontal",
     )
 
-    # --- ADD USER ---
+    # --- ADD USERS ---
     if manage_selected == "Benutzer hinzufügen":
-        st.header(f"Anlegen eines neuen Benutzers")
+
+        if st.session_state["success"] != "" and st.session_state["success"] != "Benutzer erfolgreich angelegt!":
+            st.session_state["success"] = ""
+
         with st.form("entry_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
             location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
             tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
-            job = col2.selectbox(" Tätigkeit am MCI oder so:", tool_types, key="type")
+            job = col2.selectbox("Tätigkeit am MCI:", tool_types, key="type")
             name = st.text_input("Name", max_chars=64, placeholder="Name hier einfügen ...", key="Name")
             id = st.text_input("E-mail", max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
 
             submitted = st.form_submit_button("Neuen Benutzer anlegen")
             if submitted:
                 User(id, name, location, job)
-                st.success("Neuen Benutzer erfolgreich anlegen!")
+                st.session_state["success"] = "Benutzer erfolgreich angelegt!"
                 st.balloons()
 
-    # --- EDIT USER ---               
-    if manage_selected == "Benutzer bearbeiten":    
-        user_options = [user.name for user in User._list]
-        st.header(f"Benutzer bearbeiten")
+    # --- EDIT USERS ---               
+    if manage_selected == "Benutzer bearbeiten":
 
+        if st.session_state["success"] != "" and st.session_state["success"] != "Änderungen erfolgreich gespeichert!":
+            st.session_state["success"] = ""
+
+        user_options = [user.name for user in User._list]
+        
 
         with st.form("select_form", clear_on_submit=True):
             user = st.selectbox(
@@ -93,7 +98,7 @@ if selected == "Benutzer verwalten":
                     col1, col2 = st.columns(2)
                     location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci", index=roman.fromRoman(user_to_edit.location)-1)
                     tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
-                    job = col2.selectbox(" Tätigkeit am MCI oder so:", tool_types, key="type", index=tool_types.index(user_to_edit.job))
+                    job = col2.selectbox("Tätigkeit am MCI:", tool_types, key="type", index=tool_types.index(user_to_edit.job))
                     name = st.text_input("Name", value=user_to_edit.name, max_chars=64, placeholder="Name hier einfügen ...", key="Name")
                     id = st.text_input("E-mail", value=user_to_edit.id, max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
                     "---"
@@ -111,6 +116,10 @@ if selected == "Benutzer verwalten":
         st.write(st.session_state["manage"])
     # --- REMOVE USERS ---                      
     if manage_selected == "Benutzer entfernen":
+
+        if st.session_state["success"] != "" and st.session_state["success"] != "Benutzer erfolgreich gelöscht!":
+            st.session_state["success"] = ""
+
         user_options = [user.name for user in User._list]
         with st.form("delete_form", clear_on_submit=True):
             user = st.selectbox(
@@ -124,11 +133,11 @@ if selected == "Benutzer verwalten":
                     st.rerun()
                 else:
                     st.error("Benutzer konnte nicht gelöscht werden!")
-            
-    st.success(st.session_state["success"])       
+    if st.session_state["success"] != "":        
+        st.success(st.session_state["success"])       
 
 # --- SHOW USERS ---
-if selected == "Benutzer anzeigen":  
+if selected == "Benutzer anzeigen":
     if len(User._list) != 0:
         user_data = [{"Name": user.name, "E-Mail": user.id} for user in User._list]
         df = pd.DataFrame(user_data)
