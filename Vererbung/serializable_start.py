@@ -7,19 +7,22 @@ class Serializable(ABC):
     def __init__(self, id):
         self.id = id
 
-    #ToDo: Implement this class
+    @abstractmethod
+    def get_db_connector(self):
+        return None
+    
     def store(self):
         print("Storing data...")
 
         query = Query()
-        result = self.db_connector.search(query.id == self.id)
+        result = self.get_db_connector().search(query.id == self.id)
         if result:
             # Update the existing record with the current instance's data
-            result = self.db_connector.update(self.to_dict(), doc_ids=[result[0].doc_id])
+            result = self.get_db_connector().update(self.to_dict(), doc_ids=[result[0].doc_id])
             print("Data updated.")
         else:
             # If the device doesn't exist, insert a new record
-            self.db_connector.insert(self.to_dict())
+            self.get_db_connector().insert(self.to_dict())
             print("Data inserted.")
 
     @classmethod
@@ -29,7 +32,7 @@ class Serializable(ABC):
 
     def delete_user(self):
         query = Query()
-        result = self.db_connector.remove(query.id == self.id)
+        result = self.get_db_connector().remove(query.id == self.id)
         print("User deleted.")
 
     #Do not modify this function unless you really know what you are doing!

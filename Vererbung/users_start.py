@@ -4,7 +4,9 @@ from database_start import DatabaseConnector
 from serializable_start import Serializable
 
 class User(Serializable):
-    db_connector = DatabaseConnector().get_users_table()
+
+    def get_db_connector(self):
+        return DatabaseConnector().get_users_table()
 
     def __init__(self, name, email) -> None:
         super().__init__(email)
@@ -14,7 +16,7 @@ class User(Serializable):
     @classmethod
     def load_data_by_id(cls, id):
         query = Query()
-        result = cls.db_connector.search(query.id == id)
+        result = cls.get_db_connector(cls).search(query.id == id)
         if result:
             data = result[0]
             return cls(data['name'], data['email'])

@@ -23,6 +23,13 @@ class Device(Serializable):
         self.end_of_life = end_of_life if end_of_life else datetime.today().date()
         self.__creation_date = creation_date if creation_date else datetime.today().date()
         self.__last_update = last_update if last_update else datetime.today().date()
+
+    def get_db_connector(self):
+        return DatabaseConnector().get_devices_table()
+    
+    def store(self):
+        self.__last_update = datetime.today().date()
+        super().store()
         
     # String representation of the class
     def __str__(self):
@@ -37,7 +44,7 @@ class Device(Serializable):
     def load_data_by_id(cls, id):
         # Load data from the database and create an instance of the Device class
         query = Query()
-        result = cls.db_connector.search(query.id == id)
+        result = cls.get_db_connector(cls).search(query.id == id)
 
         if result:
             data = result[0]
