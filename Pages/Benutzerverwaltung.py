@@ -135,9 +135,9 @@ if selected == "Benutzer verwalten":
 
             submitted = st.form_submit_button("Benutzer löschen")
             if submitted:
-                user = User.load_data_by_name(user_name)
-                if user is not None:
-                    user.delete_user()
+                user_delete = User.load_data_by_name(user_name)
+                if user_delete is not None:
+                    user_delete.delete_user()
                     if User.load_data_by_name(user_name) is None:
                         st.session_state["success"] = "Benutzer erfolgreich gelöscht!"                  
                         st.rerun()
@@ -146,7 +146,7 @@ if selected == "Benutzer verwalten":
                 else:
                     st.error("Benutzer nicht gefunden!")
 
-    if st.session_state["success"] != "":        
+    if st.session_state["success"] != "" :        
         st.success(st.session_state["success"])       
     
 # --- SHOW USERS ---
