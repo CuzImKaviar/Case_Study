@@ -23,6 +23,10 @@ if "manage" not in st.session_state:
 if "success" not in st.session_state:
     st.session_state["success"] = ""
 
+# --- CALLBACKS ---
+def manage_true():
+    st.session_state["manage"] = True
+
 # --- HIDE STREAMLIT STYLE ---
 hide_st_style = """
             <style>
@@ -87,7 +91,7 @@ if selected == "Benutzer verwalten":
             )
             submitted = st.form_submit_button("Benutzer bearbeiten")
             if submitted:
-                st.session_state["manage"] = True
+                manage_true()
         
             
         

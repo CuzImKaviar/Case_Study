@@ -8,10 +8,15 @@ class User(Serializable):
     def get_db_connector(self):
         return DatabaseConnector().get_users_table()
 
-    def __init__(self, name, email) -> None:
+    def __init__(self, email, name, location, job) -> None:
+
         super().__init__(email)
+        
         self.name = name
         self.email = email
+        self.location = location
+        self.job = job
+        
 
     @classmethod
     def load_data_by_id(cls, id):
@@ -19,26 +24,26 @@ class User(Serializable):
         result = cls.get_db_connector(cls).search(query.id == id)
         if result:
             data = result[0]
-            return cls(data['name'], data['email'])
+            return cls(data['email'], data['name'], data['location'], data['job'])
         else:
             return None
         
 
     def __str__(self):
-        return f'User: {self.name} ({self.id})'
+        return f'User: {self.name} ({self.email}), MCI: {self.location} as {self.job}'
 
     def __repr__(self):
         return self.__str__()
 
 if __name__ == "__main__":
     # Create a device
-    user1 = User("User One", "one@mci.edu")
-    user2 = User("User Two", "two@mci.edu") 
-    user3 = User("User Three", "three@mci.edu") 
+    user1 = User("one@mci.edu", "User One", "Innsbruck", "Student")
+    user2 = User("two@mci.edu", "User Two", "Imst", "Student") 
+    user3 = User("three@mci.edu", "User Three", "Landeck", "Student") 
     user1.store()
     user2.store()
     user3.store()
-    user4 = User("User Four", "four@mci.edu") 
+    user4 = User("four@mci.edu", "User Four", "Landeck", "Professor") 
     user4.store()
 
     loaded_user = User.load_data_by_id('four@mci.edu')
