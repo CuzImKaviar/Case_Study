@@ -5,7 +5,7 @@ import roman
 import pandas as pd
 import datetime
 import time
-from users import User
+from users_start import User
 
 # -------------- SETTINGS --------------
 page_title = "Benutzerverwaltung"
@@ -67,11 +67,11 @@ if selected == "Benutzer verwalten":
             tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
             job = col2.selectbox("Tätigkeit am MCI:", tool_types, key="type")
             name = st.text_input("Name", max_chars=64, placeholder="Name hier einfügen ...", key="Name")
-            id = st.text_input("E-mail", max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
+            email = st.text_input("E-mail", max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
 
             submitted = st.form_submit_button("Neuen Benutzer anlegen")
             if submitted:
-                User(id, name, location, job)
+                User(email, name, location, job).store()
                 st.session_state["success"] = "Benutzer erfolgreich angelegt!"
                 st.balloons()
 
@@ -81,14 +81,14 @@ if selected == "Benutzer verwalten":
         if st.session_state["success"] != "" and st.session_state["success"] != "Änderungen erfolgreich gespeichert!":
             st.session_state["success"] = ""
 
-        user_options = [user.name for user in User._list]
-        
+        user_options = User.get_all_names(User)
 
         with st.form("select_form", clear_on_submit=True):
-            user = st.selectbox(
+            user_name = st.selectbox(
                 'Benutzer auswählen',
                 options = user_options, key="user"
             )
+
             submitted = st.form_submit_button("Benutzer bearbeiten")
             if submitted:
                 manage_true()
@@ -96,19 +96,20 @@ if selected == "Benutzer verwalten":
             
         
         if st.session_state["manage"]:    
-            user_to_edit = next((current_user for current_user in User._list if current_user.name == user), None)
-            if user_to_edit is not None:
+            user = User.load_data_by_name(user_name)
+            if user is not None:
                 with st.form("edit_form", clear_on_submit=False):
                     col1, col2 = st.columns(2)
-                    location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci", index=roman.fromRoman(user_to_edit.location)-1)
+                    location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci", index=roman.fromRoman(user.location)-1)
                     tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
-                    job = col2.selectbox("Tätigkeit am MCI:", tool_types, key="type", index=tool_types.index(user_to_edit.job))
-                    name = st.text_input("Name", value=user_to_edit.name, max_chars=64, placeholder="Name hier einfügen ...", key="Name")
-                    id = st.text_input("E-mail", value=user_to_edit.id, max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
+                    job = col2.selectbox("Tätigkeit am MCI:", tool_types, key="type", index=tool_types.index(user.job))
+                    name = st.text_input("Name", value=user.name, max_chars=64, placeholder="Name hier einfügen ...", key="Name")
+                    email = st.text_input("E-mail", value=user.email, max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
                     "---"
                     save = st.form_submit_button("Änderungen speichern")
                     if save:
-                        st.write(User.update(user_to_edit.name, id, name, location, job))
+                        user_updated = User(email, name, location, job)
+                        user_updated.store()
                         st.session_state["manage"] = False
                         st.session_state["success"] = "Änderungen erfolgreich gespeichert!"
                         st.rerun()
@@ -117,33 +118,42 @@ if selected == "Benutzer verwalten":
 
             else:
                 st.error("Benutzer nicht gefunden!")
-        st.write(st.session_state["manage"])
+
     # --- REMOVE USERS ---                      
     if manage_selected == "Benutzer entfernen":
-
+    
         if st.session_state["success"] != "" and st.session_state["success"] != "Benutzer erfolgreich gelöscht!":
             st.session_state["success"] = ""
+    
+        user_options = User.get_all_names(User)
 
-        user_options = [user.name for user in User._list]
         with st.form("delete_form", clear_on_submit=True):
-            user = st.selectbox(
+            user_name = st.selectbox(
                 'Benutzer auswählen',
-                options = user_options, key="user"
+                options = user_options, key="user",
             )
+
             submitted = st.form_submit_button("Benutzer löschen")
             if submitted:
-                if User.remove(user):
-                    st.session_state["success"] = "Benutzer erfolgreich gelöscht!"                  
-                    st.rerun()
+                user = User.load_data_by_name(user_name)
+                if user is not None:
+                    user.delete_user()
+                    if User.load_data_by_name(user_name) is None:
+                        st.session_state["success"] = "Benutzer erfolgreich gelöscht!"                  
+                        st.rerun()
+                    else:
+                        st.error("Benutzer konnte nicht gelöscht werden!")
                 else:
-                    st.error("Benutzer konnte nicht gelöscht werden!")
+                    st.error("Benutzer nicht gefunden!")
+
     if st.session_state["success"] != "":        
         st.success(st.session_state["success"])       
-
+    
 # --- SHOW USERS ---
 if selected == "Benutzer anzeigen":
-    if len(User._list) != 0:
-        user_data = [{"Name": user.name, "E-Mail": user.id} for user in User._list]
+    users = User.get_db_connector(User)
+    if len(users) != 0:
+        user_data = [{"Name": user['name'], "E-Mail": user['id']} for user in users]
         df = pd.DataFrame(user_data)
         df.index = df.index + 1
         st.table(df)

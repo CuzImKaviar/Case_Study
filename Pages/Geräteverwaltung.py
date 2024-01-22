@@ -16,6 +16,7 @@ if "manage" not in st.session_state:
 if "success" not in st.session_state:
     st.session_state["success"] = ""
 
+
 calendar_resources = [
     {"id": "a", "building": "Building A", "title": "Room A"},
     {"id": "b", "building": "Building A", "title": "Room B"},

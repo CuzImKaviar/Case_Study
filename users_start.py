@@ -1,12 +1,15 @@
 import os
 from tinydb import TinyDB, Query
 from database_start import DatabaseConnector
-from serializable_start import Serializable
+from serializer import Serializable
 
 class User(Serializable):
 
     def get_db_connector(self):
         return DatabaseConnector().get_users_table()
+    
+    def get_all_names(self):
+        return [user['name'] for user in User.get_db_connector(User)]
 
     def __init__(self, email, name, location, job) -> None:
 
@@ -22,6 +25,16 @@ class User(Serializable):
     def load_data_by_id(cls, id):
         query = Query()
         result = cls.get_db_connector(cls).search(query.id == id)
+        if result:
+            data = result[0]
+            return cls(data['email'], data['name'], data['location'], data['job'])
+        else:
+            return None
+    
+    @classmethod
+    def load_data_by_name(cls, name):
+        query = Query()
+        result = cls.get_db_connector(cls).search(query.name == name)
         if result:
             data = result[0]
             return cls(data['email'], data['name'], data['location'], data['job'])
@@ -43,6 +56,7 @@ if __name__ == "__main__":
     user1.store()
     user2.store()
     user3.store()
+    user1.delete_user()
     user4 = User("four@mci.edu", "User Four", "Landeck", "Professor") 
     user4.store()
 
