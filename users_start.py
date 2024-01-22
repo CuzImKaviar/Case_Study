@@ -1,7 +1,7 @@
 import os
 from tinydb import TinyDB, Query
 from database_start import DatabaseConnector
-from serializer import Serializable
+from serializer_data import Serializable
 
 class User(Serializable):
 
