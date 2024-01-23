@@ -271,7 +271,7 @@ if selected == "Geräte verwalten":
 
 # --- RESERVE DEVICES ---
 if selected == "Geräte resvieren":
-    st.header(f"Anlegen eines neuem Gerät")
+    st.header(f"Resvieren eines  Geräts")
     with st.form("entry_form", clear_on_submit=True):
         col1, col2 = st.columns(2)
         col1.selectbox(
