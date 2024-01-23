@@ -3,7 +3,7 @@ import os
 from users import User
 
 from tinydb import TinyDB, Query
-from serializer import serializer
+from serializer_old import serializer
 
 
 class Device():

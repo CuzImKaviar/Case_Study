@@ -10,6 +10,13 @@ page_title = "Geräteverwaltung"
 page_icon = ":books:"  # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
 layout = "centered"
 
+# --- SESSION STATES ---
+if "manage" not in st.session_state:
+    st.session_state["manage"] = False
+if "success" not in st.session_state:
+    st.session_state["success"] = ""
+
+
 calendar_resources = [
     {"id": "a", "building": "Building A", "title": "Room A"},
     {"id": "b", "building": "Building A", "title": "Room B"},
@@ -166,7 +173,7 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 # --- NAVIGATION MENU ---
 selected = option_menu(
     menu_title=None,
-    options=["Geräte verwalten", "Geräte resvieren", "Geräte anzeigen"],
+    options=["Geräte verwalten", "Geräte reservieren", "Geräte anzeigen"],
     icons=["pencil-fill", "clock-history", "bar-chart-fill"],  # https://icons.getbootstrap.com/
     orientation="horizontal",
 )
@@ -184,7 +191,7 @@ if selected == "Geräte verwalten":
 
     # --- ADD DEVICES ---
     if manage_selected == "Geräte hinzufügen":
-        st.header(f"Anlegen eines neuem Gerät")
+        st.header(f"Anlegen eines neuen Gerätes")
         with st.form("entry_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
             col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
@@ -212,7 +219,7 @@ if selected == "Geräte verwalten":
 
             submitted = st.form_submit_button("Neues Gerät anlegen")
             if submitted:
-                st.success("Neues Gerät erfolgreich anlegen!")
+                st.success("Neues Gerät erfolgreich angelegt!")
 
     # --- MANAGE DEVICE ---               
     if manage_selected == "Geräte bearbeiten":
