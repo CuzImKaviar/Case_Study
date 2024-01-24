@@ -81,22 +81,22 @@ if selected == "Benutzer verwalten":
         if st.session_state["success"] != "" and st.session_state["success"] != "Änderungen erfolgreich gespeichert!":
             st.session_state["success"] = ""
 
-        user_options = User.get_all_names(User)
+        user_options = User.get_all_ids(User)
 
         with st.form("select_form", clear_on_submit=True):
-            user_name = st.selectbox(
+            user_id = st.selectbox(
                 'Benutzer auswählen',
                 options = user_options, key="user"
             )
 
             submitted = st.form_submit_button("Benutzer bearbeiten")
             if submitted:
-                manage_true()
+                st.session_state["manage"] = True
         
             
         
         if st.session_state["manage"]:    
-            user = User.load_data_by_name(user_name)
+            user = User.load_data_by_id(user_id)
             if user is not None:
                 with st.form("edit_form", clear_on_submit=False):
                     col1, col2 = st.columns(2)
@@ -104,7 +104,7 @@ if selected == "Benutzer verwalten":
                     tool_types = ["Student", "Mitarbeiter", "Professor", "Diverses"]
                     job = col2.selectbox("Tätigkeit am MCI:", tool_types, key="type", index=tool_types.index(user.job))
                     name = st.text_input("Name", value=user.name, max_chars=64, placeholder="Name hier einfügen ...", key="Name")
-                    email = st.text_input("E-mail", value=user.email, max_chars=64, placeholder="E-mail hier einfügen ...", key="E-mail")
+                    email = user.email
                     "---"
                     save = st.form_submit_button("Änderungen speichern")
                     if save:
