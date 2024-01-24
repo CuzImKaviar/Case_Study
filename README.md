@@ -1,4 +1,8 @@
 <a name="readme-top"></a>
+[![Version 1.0][Version_1.0]][Version_1.0-url]
+[![License][License]][License-url]
+
+
 # Mockup der Geräteverwaltung
 
 Dieses Projekt stellt ein Mockup für eine Sotware zur Geräteverwaltung an einer Hochschule da.
@@ -37,6 +41,11 @@ Das Endgültige Programm soll folgende Umstände berücksichtigen:
 &emsp;[![pandas][pandas]][pandas-url]
 
 *(für genauere Informationen siehe* [requirements.txt](requirements.txt) *)*
+
+#### Versionsverwaltung
+
+&emsp;[![Git][Git]][Git-url]  
+&emsp;[![GitHub][GitHub]][GitHub-url]  
 
 #### Betriebssysteme
 
@@ -95,7 +104,9 @@ Contributors names and contact info
 
 ## Version History
 
-* 0.1
+* v1.0
+    * Funktionalität hinzugefügt
+* v0.1
     * Setup
     * Siehe [Commits](github.com/CuzImKaviar/Case_Study/commits/main/) für mehr Details
 
@@ -122,6 +133,10 @@ Inspiration, code snippets, etc.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[Version_1.0]: https://img.shields.io/badge/version-v1.0-blue
+[Version_1.0-url]: https://github.com/CuzImKaviar/Case_Study/commits/main/
+[License]: https://img.shields.io/badge/license-Educational%20Community%20License,%20Version%202.0-3DA639
+[License-url]: https://opensource.org/license/ecl-2-0/
 [Python]: https://img.shields.io/badge/python_3.12.0-FFD43B?style=for-the-badge&logo=python&logoColor=306998
 [Python-url]: https://www.python.org
 [Streamlit]: https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=FFFFFF
@@ -130,6 +145,10 @@ Inspiration, code snippets, etc.
 [NumPy-url]: https://numpy.org
 [pandas]: https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=FFFFFF
 [pandas-url]: https://pandas.pydata.org
+[Git]: https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white
+[Git-url]: https://git-scm.com
+[GitHub]: https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white
+[GitHub-url]: https://github.com
 [Windows_10]: https://img.shields.io/badge/Windows%2010-357EC7?style=for-the-badge&logo=windows10
 [Windows_10-url]: https://www.microsoft.com/de-de/software-download/windows10%20
 [Windows_11]: https://img.shields.io/badge/Windows%2011-357EC7?style=for-the-badge&logo=windows11
