@@ -83,7 +83,7 @@ if selected == "Benutzer verwalten":
 
         user_options = User.get_all_ids(User)
 
-        with st.form("select_form", clear_on_submit=True):
+        with st.form("select_form", clear_on_submit=False):
             user_id = st.selectbox(
                 'Benutzer auswählen',
                 options = user_options, key="user"
@@ -125,14 +125,19 @@ if selected == "Benutzer verwalten":
         if st.session_state["success"] != "" and st.session_state["success"] != "Benutzer erfolgreich gelöscht!":
             st.session_state["success"] = ""
     
-        user_options = User.get_all_names(User)
+        user_names = User.get_all_names(User)
+        user_id = User.get_all_ids(User)
+
+        user_options = list(zip(user_names, user_id))
+
+        user_options = [f'{name}, {id}' for name, id in user_options]
 
         with st.form("delete_form", clear_on_submit=True):
             user_name = st.selectbox(
                 'Benutzer auswählen',
                 options = user_options, key="user",
             )
-
+            user_name = user_name.split(",")[0]
             submitted = st.form_submit_button("Benutzer löschen")
             if submitted:
                 user_delete = User.load_data_by_name(user_name)
