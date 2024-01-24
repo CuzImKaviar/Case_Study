@@ -67,7 +67,7 @@ Da es sich bei diesem Programm nur um ein Mockup handelt, muss die Entsprechende
 * Instalieren aller benötigten Biblioteken mit  
 ```pip install -r requirements.txt```
 * Ausführen des Programms mit  
-```streamlit run .\Home.py```
+```streamlit run Home.py```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
