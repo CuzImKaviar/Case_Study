@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
+
 [![Version 1.0][Version_1.0]][Version_1.0-url]
 [![License][License]][License-url]
-
 
 # Mockup der Geräteverwaltung
 
