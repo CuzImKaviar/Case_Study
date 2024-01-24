@@ -3,7 +3,7 @@ from streamlit_option_menu import option_menu
 from streamlit_calendar import calendar
 import roman
 import datetime
-from devices import Device
+from page_navigation import nav_page
 
 # -------------- SETTINGS --------------
 page_title = "Geräteverwaltung"
@@ -366,3 +366,12 @@ if selected == "Geräte anzeigen":
         """,
         key=show_selected,
     )
+
+# --- NAVIGATE PAGE ---
+col1, col2 = st.columns(2)
+benutzerverwaltung = col1.button("Benutzerverwaltung:woman_and_man_holding_hands:", use_container_width=True)
+geraeteverwaltung = col2.button("Geräteverwaltung:books:", use_container_width=True)
+if benutzerverwaltung:
+    nav_page("Benutzerverwaltung")
+if geraeteverwaltung:
+    nav_page("Geraeteverwaltung")

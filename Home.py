@@ -19,7 +19,10 @@ hide_st_style = """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # --- NAVIGATE PAGE ---
-if st.button("Benutzerverwaltung"):
+col1, col2 = st.columns(2)
+benutzerverwaltung = col1.button("Benutzerverwaltung:woman_and_man_holding_hands:", use_container_width=True)
+geraeteverwaltung = col2.button("Geräteverwaltung:books:", use_container_width=True)
+if benutzerverwaltung:
     nav_page("Benutzerverwaltung")
-if st.button("Geräteverwaltung"):
+if geraeteverwaltung:
     nav_page("Geraeteverwaltung")    

@@ -1,11 +1,9 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from streamlit_calendar import calendar
 import roman
 import pandas as pd
-import datetime
-import time
 from users_start import User
+from page_navigation import nav_page
 
 # -------------- SETTINGS --------------
 page_title = "Benutzerverwaltung"
@@ -164,3 +162,12 @@ if selected == "Benutzer anzeigen":
         st.table(df)
     else:
         st.error("Keine Benutzer vorhanden!")
+
+# --- NAVIGATE PAGE ---
+col1, col2 = st.columns(2)
+benutzerverwaltung = col1.button("Benutzerverwaltung:woman_and_man_holding_hands:", use_container_width=True)
+geraeteverwaltung = col2.button("Geräteverwaltung:books:", use_container_width=True)
+if benutzerverwaltung:
+    nav_page("Benutzerverwaltung")
+if geraeteverwaltung:
+    nav_page("Geraeteverwaltung")
