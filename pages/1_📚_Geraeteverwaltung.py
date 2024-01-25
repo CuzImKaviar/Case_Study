@@ -4,6 +4,8 @@ from streamlit_calendar import calendar
 import roman
 import datetime
 from page_navigation import nav_page
+from users_start import User
+from devices_start import Device
 
 # -------------- SETTINGS --------------
 page_title = "Geräteverwaltung"
@@ -197,8 +199,8 @@ if selected == "Geräte verwalten":
             col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
             tool_types = ["Office", "EDV", "Labore", "Diverses"]
             col2.selectbox("Geräte Art:", tool_types, key="type")
-            st.text_input("Gerätename:", max_chars=64, placeholder="Gerätename hier einfügen ...", key="name")
-
+            device_name = st.text_input("Gerätename:", max_chars=64, placeholder="Gerätename hier einfügen ...", key="name")
+            managed_by_user_id = st.text_input("Verantwortlicher", max_chars=64, placeholder= "TEMPORÄR  E_mail des Verantwortlichen zB one@mci.edu")
             "---"
 
             with st.expander("Geräteeigenschaften"):
@@ -217,9 +219,13 @@ if selected == "Geräte verwalten":
 
             "---"
 
-            submitted = st.form_submit_button("Neues Gerät anlegen")
+            submitted = st.form_submit_button("Neues Gerät angelegt")
             if submitted:
-                st.success("Neues Gerät erfolgreich angelegt!")
+                #new_Device = Device(device_name,managed_by_user_id)
+                #new_Device.store()
+                st.session_state["success"] = "Neues Gerät wurde angelegt"
+                st.balloons()
+
 
     # --- MANAGE DEVICE ---               
     if manage_selected == "Geräte bearbeiten":
