@@ -223,8 +223,9 @@ if selected == "Geräte verwalten":
             if submitted:
                 #new_Device = Device(device_name,managed_by_user_id)
                 #new_Device.store()
-                st.session_state["success"] = "Neues Gerät wurde angelegt"
+                st.success("Neues Gerät angelegt")
                 st.balloons()
+            
 
 
     # --- MANAGE DEVICE ---               
