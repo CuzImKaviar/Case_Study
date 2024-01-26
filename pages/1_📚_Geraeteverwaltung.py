@@ -202,7 +202,7 @@ if selected == "Geräte verwalten":
             device_name = st.text_input("Gerätename:", max_chars=64, placeholder="Gerätename hier einfügen ...", key="name")
             
             
-            user_options = User.get_all_ids(User)
+            user_options = User.get_all_ids()
 
             user_id = st.selectbox(
                 'Verwaltenden Benutzer auswählen',
