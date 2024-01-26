@@ -4,7 +4,7 @@ from datetime import datetime
 from users_start import User
 from database_start import DatabaseConnector
 from tinydb import TinyDB, Query
-from serializer import Serializable
+from serializer_data import Serializable
 
 
 class Device(Serializable):

@@ -221,8 +221,8 @@ if selected == "Geräte verwalten":
 
             submitted = st.form_submit_button("Neues Gerät angelegt")
             if submitted:
-                #new_Device = Device(device_name,managed_by_user_id)
-                #new_Device.store()
+                new_Device = Device(device_name,managed_by_user_id)
+                new_Device.store()
                 st.success("Neues Gerät angelegt")
                 st.balloons()
             
