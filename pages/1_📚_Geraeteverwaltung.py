@@ -243,7 +243,7 @@ if selected == "Geräte verwalten":
         manage = False
         st.header(f"Geräte bearbeiten")
 
-        device_options = Device.get_all_names(Device)
+        device_options = Device.get_all_names()
         
         with st.form("select_form", clear_on_submit=True):
             device_id = st.selectbox('Gerät auswählen',options = device_options, key="device")

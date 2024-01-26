@@ -79,7 +79,7 @@ if selected == "Benutzer verwalten":
         if st.session_state["success"] != "" and st.session_state["success"] != "Änderungen erfolgreich gespeichert!":
             st.session_state["success"] = ""
 
-        user_options = User.get_all_ids(User)
+        user_options = User.get_all_ids()
 
         with st.form("select_form", clear_on_submit=False):
             user_id = st.selectbox(
@@ -123,8 +123,8 @@ if selected == "Benutzer verwalten":
         if st.session_state["success"] != "" and st.session_state["success"] != "Benutzer erfolgreich gelöscht!":
             st.session_state["success"] = ""
     
-        user_names = User.get_all_names(User)
-        user_id = User.get_all_ids(User)
+        user_names = User.get_all_names()
+        user_id = User.get_all_ids()
 
         user_options = list(zip(user_names, user_id))
 

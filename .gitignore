@@ -130,8 +130,9 @@ venv.bak/
 VUmgebung/
 VUmgebung
 
-#Visual Studio Code Workspace
+#Visual Studio Code
 *.code-workspace
+.vscode
 
 # Spyder project settings
 .spyderproject
