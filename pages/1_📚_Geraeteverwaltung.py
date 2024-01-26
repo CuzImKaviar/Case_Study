@@ -200,7 +200,19 @@ if selected == "Geräte verwalten":
             tool_types = ["Office", "EDV", "Labore", "Diverses"]
             col2.selectbox("Geräte Art:", tool_types, key="type")
             device_name = st.text_input("Gerätename:", max_chars=64, placeholder="Gerätename hier einfügen ...", key="name")
-            managed_by_user_id = st.text_input("Verantwortlicher", max_chars=64, placeholder= "TEMPORÄR  E_mail des Verantwortlichen zB one@mci.edu")
+            
+            
+            user_options = User.get_all_ids(User)
+
+            user_id = st.selectbox(
+                'Verwaltenden Benutzer auswählen',
+                options = user_options, key="user"
+            )
+
+            managed_by_user_id = user_id
+            
+            
+            
             "---"
 
             with st.expander("Geräteeigenschaften"):
