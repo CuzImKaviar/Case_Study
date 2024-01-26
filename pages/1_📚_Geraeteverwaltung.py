@@ -291,11 +291,14 @@ if selected == "Geräte verwalten":
     if manage_selected == "Geräte entfernen":
         st.header(f"Geräte entfernen")
         with st.form("delete_form", clear_on_submit=True):
-            device = st.selectbox(
-                'Gerät auswählen',
-                options = ["Gerät_A", "Gerät_B"], key="device")
+
+            device_options = Device.get_all_names()
+
+            device_to_be_deleted_name = st.selectbox('Gerät auswählen',options = device_options, key="device")
+            device_to_be_deleted = Device.load_data_by_id(device_to_be_deleted_name)
             submitted = st.form_submit_button("Gerät löschen")
             if submitted:
+                device_to_be_deleted.delete_user()
                 st.success("Gerät erfolgreich gelöscht!")
 
 
