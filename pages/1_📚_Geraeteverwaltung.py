@@ -204,10 +204,7 @@ if selected == "Geräte verwalten":
             
             user_options = User.get_all_ids()
 
-            user_id = st.selectbox(
-                'Verwaltenden Benutzer auswählen',
-                options = user_options, key="user"
-            )
+            user_id = st.selectbox('Verwaltenden Benutzer auswählen',options = user_options, key="user")
 
             managed_by_user_id = user_id
             
@@ -251,10 +248,16 @@ if selected == "Geräte verwalten":
             if submitted:
                 device_name = st.session_state["device"]
                 manage = True
-        
+
         if manage:
+            device = Device.load_data_by_id(device_id)
             with st.form("edit_form", clear_on_submit=True):
                 st.header(str(device_name))
+                
+                new_device_name = st.text_input("Gerätename:", max_chars=64, placeholder="Neuen Gerätenamen hier einfügen ...", key="name")
+                user_options = User.get_all_ids()
+                new_managed_by_id = st.selectbox('Verwaltenden Benutzer auswählen',options = user_options, key="user")
+
                 col1, col2 = st.columns(2)
                 col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
                 tool_types = ["Office", "EDV", "Labore", "Diverses"]
@@ -280,7 +283,10 @@ if selected == "Geräte verwalten":
 
                 save = st.form_submit_button("Änderungen speichern")
                 if save:
-                    st.success("Änderungen erfolgreich gespeichert!")
+                    new_Device = Device(new_device_name,new_managed_by_id)
+                    new_Device.store()
+                    st.success("Gerät bearbeitet")
+                    st.balloons()
             
     # --- REMOVE DEVICES ---
     if manage_selected == "Geräte entfernen":
