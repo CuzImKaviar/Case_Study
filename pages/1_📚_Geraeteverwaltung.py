@@ -205,7 +205,7 @@ if selected == "Geräte verwalten":
             user_options = User.get_all_ids(User)
 
             user_id = st.selectbox(
-                'Benutzer auswählen',
+                'Verwaltenden Benutzer auswählen',
                 options = user_options, key="user"
             )
 
