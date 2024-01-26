@@ -3,7 +3,6 @@ from streamlit_option_menu import option_menu
 import roman
 import pandas as pd
 from users_start import User
-from page_navigation import nav_page
 
 # -------------- SETTINGS --------------
 page_title = "Benutzerverwaltung"
@@ -165,9 +164,8 @@ if selected == "Benutzer anzeigen":
 
 # --- NAVIGATE PAGE ---
 col1, col2 = st.columns(2)
-if col1.button("Geräteverwaltung:books:", use_container_width=True):
-    nav_page("Geraeteverwaltung")
-if col2.button("Geräteverwaltung2:books:", use_container_width=True):
-    # st.switch_page("pages/2_👫_Benutzerverwaltung.py")
+if col1.button("Home:house:", use_container_width=True):
     st.switch_page("🏠_Home.py")
+if col2.button("Geräteverwaltung:books:", use_container_width=True):
+    st.switch_page("pages/1_📚_Geraeteverwaltung.py")
 
