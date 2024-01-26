@@ -19,7 +19,7 @@ class Device():
         self.is_active = True
         self.reservation_start = reservation_start
         self.reservation_end = reservation_end
-        
+    
     # String representation of the class
     def __str__(self):
         return f'Device {self.device_name} ({self.managed_by_user_id})'
