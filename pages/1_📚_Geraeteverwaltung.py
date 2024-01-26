@@ -3,7 +3,6 @@ from streamlit_option_menu import option_menu
 from streamlit_calendar import calendar
 import roman
 import datetime
-from page_navigation import nav_page
 from users_start import User
 from devices_start import Device
 
@@ -393,5 +392,7 @@ if selected == "Geräte anzeigen":
 
 # --- NAVIGATE PAGE ---
 col1, col2 = st.columns(2)
-if col1.button("Benutzerverwaltung:woman_and_man_holding_hands:", use_container_width=True):
-    nav_page("Benutzerverwaltung")
+if col1.button("Home:house:", use_container_width=True):
+    st.switch_page("🏠_Home.py")
+if col2.button("Benutzerverwaltung:woman_and_man_holding_hands:", use_container_width=True):
+    st.switch_page("pages/2_👫_Benutzerverwaltung.py")
