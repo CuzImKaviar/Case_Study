@@ -225,7 +225,7 @@ if selected == "Geräte verwalten":
                     options=["keine Wartung notwendig", "täglich", "wöchentlich", "monatlich", "jährlich"],
                     key="intervals")
                 st.number_input("Kosten pro Wartung:", min_value=0, format="%i", step=1, key="maintenancecost")
-                st.radio("Resavierbarkeit:", ["Resavierbar", "Nicht resavierbar"], horizontal=True, key="resavable")
+                st.radio("Reservierbarkeit:", ["Reservierbar", "Nicht reservierbar"], horizontal=True, key="reservierbar")
             with st.expander("Kommentar"):
                 comment = st.text_area("Kommentarfeld", placeholder="Kommentar hier einfügen ...", label_visibility="collapsed")
 
@@ -295,8 +295,8 @@ if selected == "Geräte verwalten":
 
 
 # --- RESERVE DEVICES ---
-if selected == "Geräte resvieren":
-    st.header(f"Resvieren eines  Geräts")
+if selected == "Geräte reservieren":
+    st.header(f"Reservieren eines  Geräts")
     with st.form("entry_form", clear_on_submit=True):
         col1, col2 = st.columns(2)
         col1.selectbox(
@@ -321,9 +321,9 @@ if selected == "Geräte resvieren":
 
         "---"
 
-        submitted = st.form_submit_button("Gerät resvieren")
+        submitted = st.form_submit_button("Gerät reservieren")
         if submitted:
-            st.success("Gerät erfolgreich resviert!")
+            st.success("Gerät erfolgreich reserviert!")
 
 
 # --- SHOW DEVICES ---
