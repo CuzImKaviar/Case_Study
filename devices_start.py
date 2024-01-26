@@ -27,6 +27,12 @@ class Device(Serializable):
     def get_db_connector(self):
         return DatabaseConnector().get_devices_table()
     
+    def get_all_names(self):
+        return [device['device_name'] for device in Device.get_db_connector(Device)]
+
+    def get_all_ids(self):
+        return [device['id'] for device in Device.get_db_connector(Device)]
+    
     def store(self):
         self.__last_update = datetime.today().date()
         super().store()
