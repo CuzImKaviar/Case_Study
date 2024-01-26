@@ -166,4 +166,8 @@ if selected == "Benutzer anzeigen":
 # --- NAVIGATE PAGE ---
 col1, col2 = st.columns(2)
 if col1.button("Geräteverwaltung:books:", use_container_width=True):
-    nav_page("Geraeteverwaltung")    
+    nav_page("Geraeteverwaltung")
+if col2.button("Geräteverwaltung2:books:", use_container_width=True):
+    # st.switch_page("pages/2_👫_Benutzerverwaltung.py")
+    st.switch_page("🏠_Home.py")
+

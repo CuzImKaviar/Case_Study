@@ -24,3 +24,7 @@ if col1.button("Geräteverwaltung:books:", use_container_width=True):
     nav_page("Geraeteverwaltung")    
 if col2.button("Benutzerverwaltung:woman_and_man_holding_hands:", use_container_width=True):
     nav_page("Benutzerverwaltung")
+if col1.button("st_Geräteverwaltung:books:", use_container_width=True):
+    st.switch_page("pages/1_📚_Geraeteverwaltung.py")    
+if col2.button("st_Benutzerverwaltung:woman_and_man_holding_hands:", use_container_width=True):
+    st.switch_page("pages/2_👫_Benutzerverwaltung.py") 
