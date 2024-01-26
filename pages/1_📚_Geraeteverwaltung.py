@@ -227,11 +227,19 @@ if selected == "Geräte verwalten":
                 st.balloons()
             
 
+'''user_options = User.get_all_ids(User)
+
+        with st.form("select_form", clear_on_submit=False):
+            user_id = st.selectbox(
+                'Benutzer auswählen',
+                options = user_options, key="user"
+            )'''
 
     # --- MANAGE DEVICE ---               
     if manage_selected == "Geräte bearbeiten":
         manage = False
         st.header(f"Geräte bearbeiten")
+        device_options = Device
         with st.form("select_form", clear_on_submit=True):
             current_device_example = st.selectbox(
                 'Gerät auswählen',
