@@ -27,7 +27,8 @@ class Device(Serializable):
     def get_db_connector(self):
         return DatabaseConnector().get_devices_table()
     
-    def get_all_names(self):
+    @classmethod
+    def get_all_names(cls):
         return [device['device_name'] for device in Device.get_db_connector(Device)]
 
     def get_all_ids(self):
@@ -68,6 +69,8 @@ if __name__ == "__main__":
     device3.store()
     device4 = Device("Device3", "four@mci.edu") 
     device4.store()
+
+    res = Device.get_all_names()
 
     loaded_device = Device.load_data_by_id('Device2')
     if loaded_device:

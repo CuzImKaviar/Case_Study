@@ -8,7 +8,8 @@ class User(Serializable):
     def get_db_connector(self):
         return DatabaseConnector().get_users_table()
     
-    def get_all_names(self):
+    @classmethod
+    def get_all_names(cls):
         return [user['name'] for user in User.get_db_connector(User)]
 
     def get_all_ids(self):
@@ -62,6 +63,8 @@ if __name__ == "__main__":
     user1.delete_user()
     user4 = User("four@mci.edu", "User Four", "Landeck", "Professor") 
     user4.store()
+
+    User.get_all_names()
 
     loaded_user = User.load_data_by_id('four@mci.edu')
     if loaded_user:

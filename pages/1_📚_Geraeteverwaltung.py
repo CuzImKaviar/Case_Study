@@ -237,17 +237,16 @@ if selected == "Geräte verwalten":
                 new_Device.store()
                 st.success("Neues Gerät angelegt")
                 st.balloons()
-            
-
 
     # --- MANAGE DEVICE ---               
     if manage_selected == "Geräte bearbeiten":
         manage = False
         st.header(f"Geräte bearbeiten")
+
+        device_options = Device.get_all_names(Device)
+        
         with st.form("select_form", clear_on_submit=True):
-            current_device_example = st.selectbox(
-                'Gerät auswählen',
-                options = ["Gerät_A", "Gerät_B"], key="device")
+            device_id = st.selectbox('Gerät auswählen',options = device_options, key="device")
             submitted = st.form_submit_button("Gerät bearbeiten")
             if submitted:
                 device_name = st.session_state["device"]
