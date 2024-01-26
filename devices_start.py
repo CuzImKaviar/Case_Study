@@ -31,7 +31,8 @@ class Device(Serializable):
     def get_all_names(cls):
         return [device['device_name'] for device in Device.get_db_connector(Device)]
 
-    def get_all_ids(self):
+    @classmethod
+    def get_all_ids(cls):
         return [device['id'] for device in Device.get_db_connector(Device)]
     
     def store(self):

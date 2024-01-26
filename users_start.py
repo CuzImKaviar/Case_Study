@@ -12,7 +12,8 @@ class User(Serializable):
     def get_all_names(cls):
         return [user['name'] for user in User.get_db_connector(User)]
 
-    def get_all_ids(self):
+    @classmethod
+    def get_all_ids(cls):
         return [user['id'] for user in User.get_db_connector(User)]
 
     def __init__(self, email, name, location, job) -> None:
