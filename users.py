@@ -55,6 +55,8 @@ class User(Serializable):
 
 if __name__ == "__main__":
     # Create a device
+    print(User.get_all_names())
+    print(User.get_all_ids())
     user1 = User("one@mci.edu", "User One", "Innsbruck", "Student")
     user2 = User("two@mci.edu", "User Two", "Imst", "Student") 
     user3 = User("three@mci.edu", "User Three", "Landeck", "Student") 
@@ -65,7 +67,8 @@ if __name__ == "__main__":
     user4 = User("four@mci.edu", "User Four", "Landeck", "Professor") 
     user4.store()
 
-    User.get_all_names()
+    print(User.get_all_names())
+    print(User.get_all_ids())
 
     loaded_user = User.load_data_by_id('four@mci.edu')
     if loaded_user:

@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import roman
 import pandas as pd
-from users_start import User
+from users import User
 
 # -------------- SETTINGS --------------
 page_title = "Benutzerverwaltung"
@@ -123,30 +123,34 @@ if selected == "Benutzer verwalten":
             st.session_state["success"] = ""
     
         user_names = User.get_all_names()
-        user_id = User.get_all_ids()
+        user_ids = User.get_all_ids()
 
-        user_options = list(zip(user_names, user_id))
+        user_options = list(zip(user_names, user_ids))
 
         user_options = [f'{name}, {id}' for name, id in user_options]
 
         with st.form("delete_form", clear_on_submit=True):
-            user_name = st.selectbox(
+            user_name_email = st.selectbox(
                 'Benutzer auswählen',
                 options = user_options, key="user",
             )
-            user_name = user_name.split(",")[0]
             submitted = st.form_submit_button("Benutzer löschen")
-            if submitted:
-                user_delete = User.load_data_by_name(user_name)
-                if user_delete is not None:
-                    user_delete.delete_user()
-                    if User.load_data_by_name(user_name) is None:
-                        st.session_state["success"] = "Benutzer erfolgreich gelöscht!"                  
-                        st.rerun()
+            if user_name_email is not None:
+                user_name = user_name_email.split(",")[0]
+                
+                if submitted:
+                    user_delete = User.load_data_by_name(user_name)
+                    if user_delete is not None:
+                        user_delete.delete_user()
+                        if User.load_data_by_name(user_name) is None:
+                            st.session_state["success"] = "Benutzer erfolgreich gelöscht!"                  
+                            st.rerun()
+                        else:
+                            st.error("Benutzer konnte nicht gelöscht werden!")
                     else:
-                        st.error("Benutzer konnte nicht gelöscht werden!")
-                else:
-                    st.error("Benutzer nicht gefunden!")
+                        st.error("Benutzer nicht gefunden!")
+            else:
+                st.error("Keine Benutzer vorhanden!")
 
     if st.session_state["success"] != "" :        
         st.success(st.session_state["success"])       
