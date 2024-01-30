@@ -253,7 +253,7 @@ if selected == "Geräte verwalten":
             with st.form("edit_form", clear_on_submit=True):
                 st.header(str(device_name))
                 
-                new_device_name = st.text_input("Gerätename:", max_chars=64, placeholder="Neuen Gerätenamen hier einfügen ...", key="name")
+                new_device_name = st.text_input("Gerätename:",value=device.id, max_chars=64, placeholder="Neuen Gerätenamen hier einfügen ...", key="name")
                 user_options = User.get_all_ids()
                 new_managed_by_id = st.selectbox('Verwaltenden Benutzer auswählen',options = user_options, key="user")
 
