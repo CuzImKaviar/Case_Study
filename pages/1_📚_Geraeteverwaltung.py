@@ -5,6 +5,7 @@ import roman
 import datetime
 from users import User
 from devices import Device
+from reservation import Reservation
 
 # -------------- SETTINGS --------------
 page_title = "Geräteverwaltung"
@@ -313,27 +314,20 @@ if selected == "Geräte reservieren":
         col1, col2 = st.columns(2)
         Reserved_device = col1.selectbox('Gerät auswählen',options = device_options, key="device")
         Reserved_by = col2.selectbox('User auswählen',options = user_options, key="user")
-        #reason_types = ["Wartung", "Lehrveranstaltung", "Forschungsprojekt", "Privatgebruach"]
-        #col2.selectbox("Resvierungsgrund:", reason_types, key="reason")
+        title = st.text_input("Titel", max_chars=64, placeholder="Grund der Reservierung hier einfügen ...", key="Titel")
+    
 
         "---"
 
-        st.date_input(
-            "Resvierungszeitraum auswählen:",
-            (datetime.datetime.now(), datetime.datetime.now()),
-            datetime.datetime.now(),
-            format="DD.MM.YYYY",
-        )
+        start_date = st.date_input("Startdatum auswählen:", datetime.datetime.now(), format="DD.MM.YYYY")
+        end_date = st.date_input("Enddatum auswählen:", datetime.datetime.now(), format="DD.MM.YYYY")
+        
 
-        "---"
-
-        with st.expander("Kommentar"):
-            comment = st.text_area("Kommentarfeld", placeholder="Kommentar hier einfügen ...", label_visibility="collapsed")
-
-        "---"
 
         submitted = st.form_submit_button("Gerät reservieren")
         if submitted:
+            Reservation_1 = Reservation(Reserved_by,title,Reserved_device,start_date,end_date)
+            Reservation_1.store()
             st.success("Gerät erfolgreich reserviert!")
 
 
