@@ -306,12 +306,15 @@ if selected == "Geräte verwalten":
 if selected == "Geräte reservieren":
     st.header(f"Reservieren eines  Geräts")
     with st.form("entry_form", clear_on_submit=True):
+
+        device_options = Device.get_all_names()
+        user_options = User.get_all_names()
+
         col1, col2 = st.columns(2)
-        col1.selectbox(
-                'Gerät auswählen',
-                options = ["Gerät_A", "Gerät_B"], key="device")
-        reason_types = ["Wartung", "Lehrveranstaltung", "Forschungsprojekt", "Privatgebruach"]
-        col2.selectbox("Resvierungsgrund:", reason_types, key="reason")
+        Reserved_device = col1.selectbox('Gerät auswählen',options = device_options, key="device")
+        Reserved_by = col2.selectbox('User auswählen',options = user_options, key="user")
+        #reason_types = ["Wartung", "Lehrveranstaltung", "Forschungsprojekt", "Privatgebruach"]
+        #col2.selectbox("Resvierungsgrund:", reason_types, key="reason")
 
         "---"
 

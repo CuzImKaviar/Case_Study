@@ -27,6 +27,9 @@ class DatabaseConnector:
     def get_users_table(self) -> Table:
         return TinyDB(self.__instance.path, storage=serializer).table('users')
     
+    def get_reservation_table(self) -> Table:
+        return TinyDB(self.__instance.path, storage=serializer).table('reservations')
+    
 
 #%%
 
