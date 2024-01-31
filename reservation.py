@@ -53,12 +53,13 @@ class Reservation(Serializable):
     def __repr__(self):
         return self.__str__()
 
-Reservation_1 = Reservation("Noel@email","Untersuchung","3D_Drucker","SO","MO")
-Reservation_2 = Reservation("Noel@email","TEST","3D_Drucker","SO","MO")
-Reservation_1.store()
-Reservation_2.store()
-print(Reservation.get_all_reservations())
-print(Reservation.get_all_ids())
+if __name__ == "__main__":
+    Reservation_1 = Reservation("Noel@email","Untersuchung","3D_Drucker","SO","MO")
+    Reservation_2 = Reservation("Noel@email","TEST","3D_Drucker","SO","MO")
+    Reservation_1.store()
+    Reservation_2.store()
+    print(Reservation.get_all_reservations())
+    print(Reservation.get_all_ids())
 
 
 

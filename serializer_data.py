@@ -29,7 +29,7 @@ class Serializable(ABC):
     def load_data_by_id(cls, id):
         pass
 
-    def delete_user(self):
+    def delete(self):
         query = Query()
         result = self.get_db_connector().remove(query.id == self.id)
         print("User deleted.")

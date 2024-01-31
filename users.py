@@ -63,7 +63,7 @@ if __name__ == "__main__":
     user1.store()
     user2.store()
     user3.store()
-    user1.delete_user()
+    user1.delete()
     user4 = User("four@mci.edu", "User Four", "Landeck", "Professor") 
     user4.store()
 

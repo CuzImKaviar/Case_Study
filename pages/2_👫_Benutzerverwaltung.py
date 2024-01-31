@@ -141,7 +141,7 @@ if selected == "Benutzer verwalten":
                 if submitted:
                     user_delete = User.load_data_by_name(user_name)
                     if user_delete is not None:
-                        user_delete.delete_user()
+                        user_delete.delete()
                         if User.load_data_by_name(user_name) is None:
                             st.session_state["success"] = "Benutzer erfolgreich gelöscht!"                  
                             st.rerun()

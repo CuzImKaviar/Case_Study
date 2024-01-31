@@ -194,6 +194,10 @@ if selected == "Geräte verwalten":
     # --- ADD DEVICES ---
     if manage_selected == "Geräte hinzufügen":
         st.header(f"Anlegen eines neuen Gerätes")
+
+        if st.session_state["success"] != "" and st.session_state["success"] != "Neues Gerät angelegt":
+            st.session_state["success"] = ""
+
         with st.form("entry_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
             col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
@@ -232,11 +236,18 @@ if selected == "Geräte verwalten":
             if submitted:
                 new_Device = Device(device_name,managed_by_user_id)
                 new_Device.store()
-                st.success("Neues Gerät angelegt")
+                st.session_state["success"] = "Neues Gerät angelegt"
                 st.balloons()
+            
+        if st.session_state["success"] != "" :        
+            st.success(st.session_state["success"])
 
     # --- MANAGE DEVICE ---               
     if manage_selected == "Geräte bearbeiten":
+
+        if st.session_state["success"] != "" and st.session_state["success"] != "Gerät bearbeitet":
+            st.session_state["success"] = ""
+
         manage = False
         st.header(f"Geräte bearbeiten")
 
@@ -247,7 +258,7 @@ if selected == "Geräte verwalten":
             submitted = st.form_submit_button("Gerät bearbeiten")
             if submitted:
                 device_name = st.session_state["device"]
-                manage = True
+                manage = True 
 
         if manage:
             device = Device.load_data_by_id(device_id)
@@ -285,11 +296,18 @@ if selected == "Geräte verwalten":
                 if save:
                     new_Device = Device(new_device_name,new_managed_by_id)
                     new_Device.store()
-                    st.success("Gerät bearbeitet")
+                    st.session_state["success"] = "Gerät bearbeitet"                   
                     st.balloons()
+
+        if st.session_state["success"] != "" :        
+            st.success(st.session_state["success"])
             
     # --- REMOVE DEVICES ---
     if manage_selected == "Geräte entfernen":
+
+        if st.session_state["success"] != "" and st.session_state["success"] != "Gerät erfolgreich gelöscht!":
+            st.session_state["success"] = ""
+
         st.header(f"Geräte entfernen")
         with st.form("delete_form", clear_on_submit=True):
 
@@ -299,9 +317,13 @@ if selected == "Geräte verwalten":
             device_to_be_deleted = Device.load_data_by_id(device_to_be_deleted_name)
             submitted = st.form_submit_button("Gerät löschen")
             if submitted:
-                device_to_be_deleted.delete_user()
-                st.success("Gerät erfolgreich gelöscht!")
+                device_to_be_deleted.delete()
+                st.session_state["success"] = "Gerät erfolgreich gelöscht!"
+                st.rerun()
+                
 
+        if st.session_state["success"] != "" :        
+            st.success(st.session_state["success"])
 
 # --- RESERVE DEVICES ---
 if selected == "Geräte reservieren":
@@ -329,6 +351,9 @@ if selected == "Geräte reservieren":
             Reservation_1 = Reservation(Reserved_by,title,Reserved_device,start_date,end_date)
             Reservation_1.store()
             st.success("Gerät erfolgreich reserviert!")
+    
+    if st.session_state["success"] != "" :        
+        st.success(st.session_state["success"])
 
 
 # --- SHOW DEVICES ---
