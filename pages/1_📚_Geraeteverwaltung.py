@@ -5,7 +5,6 @@ import roman
 import datetime
 from users import User
 from devices import Device
-from reservation import Reservation
 
 # -------------- SETTINGS --------------
 page_title = "Geräteverwaltung"
@@ -200,9 +199,10 @@ if selected == "Geräte verwalten":
 
         with st.form("entry_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
-            col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
+            location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
             tool_types = ["Office", "EDV", "Labore", "Diverses"]
-            col2.selectbox("Geräte Art:", tool_types, key="type")
+            tool_type = col2.selectbox("Geräte Art:", tool_types, key="type")
+            id = st.text_input("Geräte ID:", max_chars=64, placeholder="Geräte ID hier einfügen ...", key="id")
             device_name = st.text_input("Gerätename:", max_chars=64, placeholder="Gerätename hier einfügen ...", key="name")
             
             
@@ -217,16 +217,14 @@ if selected == "Geräte verwalten":
             "---"
 
             with st.expander("Geräteeigenschaften"):
-                st.number_input("Preis:", min_value=0, format="%i", step=10, key="cost")
-                st.selectbox("Verantwortlicher:", ["Person A", "Person B"], key="person")
-                st.radio("Beweglichkeit:", ["Feststehend", "Beweglich"], horizontal=True, key="mobility")
+                price = st.number_input("Preis:", min_value=0, format="%i", step=10, key="cost")
+                movable = st.radio("Beweglichkeit:", ["Feststehend", "Beweglich"], horizontal=True, key="mobility")
             with st.expander("Wartung und Reservierung"):
-                st.radio(
+                maintanance_period = st.radio(
                     "Wartungsabstände:",
                     options=["keine Wartung notwendig", "täglich", "wöchentlich", "monatlich", "jährlich"],
                     key="intervals")
-                st.number_input("Kosten pro Wartung:", min_value=0, format="%i", step=1, key="maintenancecost")
-                st.radio("Reservierbarkeit:", ["Reservierbar", "Nicht reservierbar"], horizontal=True, key="reservierbar")
+                reservable = st.radio("Reservierbarkeit:", ["Reservierbar", "Nicht reservierbar"], horizontal=True, key="reservierbar")
             with st.expander("Kommentar"):
                 comment = st.text_area("Kommentarfeld", placeholder="Kommentar hier einfügen ...", label_visibility="collapsed")
 
@@ -234,7 +232,7 @@ if selected == "Geräte verwalten":
 
             submitted = st.form_submit_button("Neues Gerät angelegt")
             if submitted:
-                new_Device = Device(device_name,managed_by_user_id)
+                new_Device = Device(id, device_name, managed_by_user_id, location, tool_type, price, movable, maintanance_period, reservable, comment)
                 new_Device.store()
                 st.session_state["success"] = "Neues Gerät angelegt"
                 st.balloons()
@@ -242,7 +240,7 @@ if selected == "Geräte verwalten":
         if st.session_state["success"] != "" :        
             st.success(st.session_state["success"])
 
-    # --- MANAGE DEVICE ---               
+    # --- EDIT DEVICE ---               
     if manage_selected == "Geräte bearbeiten":
 
         if st.session_state["success"] != "" and st.session_state["success"] != "Gerät bearbeitet":
@@ -251,53 +249,51 @@ if selected == "Geräte verwalten":
         manage = False
         st.header(f"Geräte bearbeiten")
 
-        device_options = Device.get_all_names()
+        device_options = Device.get_all_ids()
         
-        with st.form("select_form", clear_on_submit=True):
+        with st.form("select_form", clear_on_submit=False):
             device_id = st.selectbox('Gerät auswählen',options = device_options, key="device")
             submitted = st.form_submit_button("Gerät bearbeiten")
             if submitted:
                 device_name = st.session_state["device"]
-                manage = True 
+                st.session_state["manage"] = True
 
-        if manage:
+        if st.session_state["manage"]:
             device = Device.load_data_by_id(device_id)
             with st.form("edit_form", clear_on_submit=True):
-                st.header(str(device_name))
+                st.header(str(device.device_name))
                 
-                new_device_name = st.text_input("Gerätename:",value=device.id, max_chars=64, placeholder="Neuen Gerätenamen hier einfügen ...", key="name")
+                new_device_name = st.text_input("Gerätename:",value=device.device_name, max_chars=64, placeholder="Neuen Gerätenamen hier einfügen ...", key="name")
                 user_options = User.get_all_ids()
                 new_managed_by_id = st.selectbox('Verwaltenden Benutzer auswählen',options = user_options, key="user")
 
                 col1, col2 = st.columns(2)
-                col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
+                location = col1.selectbox("MCI:", list(map(roman.toRoman,range(1,7))), key="mci")
                 tool_types = ["Office", "EDV", "Labore", "Diverses"]
-                col2.selectbox("Geräte Art:", tool_types, key="type")
+                tool_type = col2.selectbox("Geräte Art:", tool_types, key="type", index=tool_types.index(device.tool_type))
 
                 "---"
 
                 with st.expander("Geräteeigenschaften"):
-                    st.number_input("Preis:", min_value=0, format="%i", step=10, key="cost")
-                    st.selectbox("Verantwortlicher:", ["Person A", "Person B"], key="person")
-                    st.radio("Beweglichkeit:", ["Feststehend", "Beweglich"], horizontal=True, key="mobility")
+                    price = st.number_input("Preis:", min_value=0, value=device.price, format="%i", step=10, key="cost")
+                    movable = st.radio("Beweglichkeit:", ["Feststehend", "Beweglich"], horizontal=True, key="mobility")
                 with st.expander("Wartung und Reservierung"):
-                    st.radio(
+                    maintenance_period = st.radio(
                         "Wartungsabstände:",
                         options=["keine Wartung notwendig", "täglich", "wöchentlich", "monatlich", "jährlich"],
                         key="intervals")
-                    st.number_input("Kosten pro Wartung:", min_value=0, format="%i", step=1, key="maintenancecost")
-                    st.radio("Resavierbarkeit:", ["Resavierbar", "Nicht resavierbar"], horizontal=True, key="resavable")
+                    reservable = st.radio("Resavierbarkeit:", ["Resavierbar", "Nicht resavierbar"], horizontal=True, key="resavable")
                 with st.expander("Kommentar"):
-                    comment = st.text_area("Kommentarfeld", placeholder="Kommentar hier einfügen ...", label_visibility="collapsed")
+                    comment = st.text_area("Kommentarfeld", value=device.comment, placeholder="Kommentar hier einfügen ...", label_visibility="collapsed")
 
                 "---"
 
                 save = st.form_submit_button("Änderungen speichern")
                 if save:
-                    new_Device = Device(new_device_name,new_managed_by_id)
+                    new_Device = Device(device_id, new_device_name, new_managed_by_id, location, tool_type, price, movable, maintenance_period, reservable, comment)
                     new_Device.store()
                     st.session_state["success"] = "Gerät bearbeitet"                   
-                    st.balloons()
+                    st.rerun()
 
         if st.session_state["success"] != "" :        
             st.success(st.session_state["success"])
@@ -330,7 +326,7 @@ if selected == "Geräte reservieren":
     st.header(f"Reservieren eines  Geräts")
     with st.form("entry_form", clear_on_submit=True):
 
-        device_options = Device.get_all_names()
+        device_options = Device.get_all_ids()
         user_options = User.get_all_names()
 
         col1, col2 = st.columns(2)
@@ -345,11 +341,13 @@ if selected == "Geräte reservieren":
         end_date = st.date_input("Enddatum auswählen:", datetime.datetime.now(), format="DD.MM.YYYY")
         
 
-
+        device = Device.load_data_by_id(Reserved_device)
+        st.write(device)
         submitted = st.form_submit_button("Gerät reservieren")
         if submitted:
-            Reservation_1 = Reservation(Reserved_by,title,Reserved_device,start_date,end_date)
-            Reservation_1.store()
+            
+            device.add_reservations(start_date, end_date, Reserved_by, title)
+
             st.success("Gerät erfolgreich reserviert!")
     
     if st.session_state["success"] != "" :        

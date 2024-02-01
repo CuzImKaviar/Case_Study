@@ -12,17 +12,28 @@ class Device(Serializable):
     db_connector = DatabaseConnector().get_devices_table()
 
     # Constructor
-    def __init__(self, device_name: str, managed_by_user_id: str, end_of_life: datetime = None, creation_date: datetime = None, last_update: datetime = None):
-        super().__init__(device_name)
+    def __init__(self, id, device_name, managed_by_user_id, location, tool_type, price, movable, maintenance_period, reservable, comment: str = None, reservations_start: list = None, reservations_end: list = None, reserved_by: list = None, reason_reservation: list = None) -> None:
+        super().__init__(id)
 
         self.device_name = device_name
         # The user id of the user that manages the device
         # We don't store the user object itself, but only the id (as a key)
         self.managed_by_user_id = managed_by_user_id
+        
+        self.location = location if location is not None else "not defined"
+        self.tool_type = tool_type if tool_type is not None else "not defined"
+        self.price = price if price is not None else "not defined"
+        self.movable = movable if movable is not None else "not defined"
+        self.maintenance_period = maintenance_period if maintenance_period is not None else "not defined"
+        self.reservable = reservable if reservable is not None else "not defined"
+        self.comment = comment if comment is not None else "not defined"
+        self.reservations_start = reservations_start if reservations_start is not None else []
+        self.reservations_end = reservations_end if reservations_end is not None else []
+        self.reserved_by = reserved_by if reserved_by is not None else []
+        self.reason_reservation = reason_reservation if reason_reservation is not None else []
         self.is_active = True
-        self.end_of_life = end_of_life if end_of_life else datetime.today().date()
-        self.__creation_date = creation_date if creation_date else datetime.today().date()
-        self.__last_update = last_update if last_update else datetime.today().date()
+        self._Device__creation_date = datetime.today().date()
+        self._Device__last_update = datetime.today().date()
 
     def get_db_connector(self):
         return DatabaseConnector().get_devices_table()
@@ -56,9 +67,17 @@ class Device(Serializable):
 
         if result:
             data = result[0]
-            return cls(data['device_name'], data['managed_by_user_id'], data['end_of_life'], data['_Device__creation_date'], data['_Device__last_update'])
+            return cls(data['id'], data['device_name'], data['managed_by_user_id'], data['location'], data['tool_type'], data['price'], data['movable'], data['maintenance_period'], data['reservable'], data['comment'], data['reservations_start'], data['reservations_end'])
         else:
             return None
+        
+
+    def add_reservations(self, start, end, reserved_by, reason_reservation):
+        self.reservations_start.append(start)
+        self.reservations_end.append(end)
+        self.reserved_by.append(reserved_by)
+        self.reason_reservation.append(reason_reservation)
+        self.store()
     
 if __name__ == "__main__":
     # Create a device
